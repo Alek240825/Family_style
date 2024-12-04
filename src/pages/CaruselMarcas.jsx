@@ -1,3 +1,4 @@
+import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 
@@ -9,23 +10,23 @@ const marcas = [
   { id: 5, name: "New Balance", logo: "/placeholder.svg?height=100&width=200&text=New+Balance" },
 ];
 
-export function CarruselMarcas() {
+function CarruselMarcas() {
   return (
     <Carousel
       opts={{
         align: "start",
       }}
-      className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto"
+      className="w-full max-w-full mx-auto"
     >
       <CarouselContent>
         {marcas.map((marca) => (
-          <CarouselItem key={marca.id} className="md:basis-1/2 lg:basis-1/3">
+          <CarouselItem key={marca.id} className="basis-1/3 sm:basis-1/4 md:basis-1/5 lg:basis-1/6 xl:basis-1/7 2xl:basis-1/8">
             <div className="p-1">
               <Card>
                 <CardContent className="flex flex-col items-center justify-center p-6 h-[150px]">
                   <img
                     src={marca.logo}
-                    alt={`Logotipo de la marca ${marca.name}`}
+                    alt={marca.name}
                     width={200}
                     height={100}
                     className="object-contain"
@@ -36,8 +37,10 @@ export function CarruselMarcas() {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious aria-label="Anterior" />
-      <CarouselNext aria-label="Siguiente" />
+      <CarouselPrevious />
+      <CarouselNext />
     </Carousel>
   );
 }
+
+export default CarruselMarcas;

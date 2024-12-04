@@ -14,11 +14,11 @@ function Header() {
             </Link>
           </div>
           <nav className="hidden md:flex space-x-4">
+            <Link to="/" className="text-black hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">
+              Inicio
+            </Link>
             <Link to="/catalogo" className="text-black hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">
               Catálogo
-            </Link>
-            <Link to="/sobre-nosotros" className="text-black hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">
-              Sobre nosotros
             </Link>
           </nav>
           <div className="md:hidden">

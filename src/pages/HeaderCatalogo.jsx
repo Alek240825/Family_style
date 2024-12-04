@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-function Header() {
+function HeaderCatalogo() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
@@ -14,11 +14,11 @@ function Header() {
             </Link>
           </div>
           <nav className="hidden md:flex space-x-4">
-            <Link to="/catalogo" className="text-black hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">
-              Catálogo
+            <Link to="/" className="text-black hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">
+              Inicio
             </Link>
             <Link to="/sobre-nosotros" className="text-black hover:text-gray-700 px-3 py-2 rounded-md text-sm font-medium">
-              Sobre nosotros
+              Sobre Nosotros
             </Link>
           </nav>
           <div className="md:hidden">
@@ -59,5 +59,5 @@ function Header() {
   );
 }
 
-export default Header;
+export default HeaderCatalogo;
 

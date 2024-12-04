@@ -1,3 +1,4 @@
+import React from 'react';
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
@@ -10,17 +11,17 @@ const zapatillas = [
   { id: 5, name: "Zapatilla de Trekking", price: 109.99, image: "/placeholder.svg?height=200&width=200&text=Trekking" },
 ];
 
-export function CarruselZapatillas() {
+function CarruselZapatillas() {
   return (
     <Carousel
       opts={{
         align: "start",
       }}
-      className="w-full max-w-sm sm:max-w-md md:max-w-lg lg:max-w-xl xl:max-w-2xl mx-auto"
+      className="w-full max-w-full mx-auto"
     >
       <CarouselContent>
         {zapatillas.map((zapatilla) => (
-          <CarouselItem key={zapatilla.id} className="md:basis-1/2 lg:basis-1/3">
+          <CarouselItem key={zapatilla.id} className="basis-1/3 sm:basis-1/4 md:basis-1/5 lg:basis-1/6 xl:basis-1/7 2xl:basis-1/8">
             <div className="p-1">
               <Card>
                 <CardContent className="flex flex-col items-center p-6">
@@ -45,3 +46,5 @@ export function CarruselZapatillas() {
     </Carousel>
   );
 }
+
+export default CarruselZapatillas;

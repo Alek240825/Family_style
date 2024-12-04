@@ -2,7 +2,7 @@ import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious
 
 export function CarruselPrincipal() {
   return (
-    <Carousel className="w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg xl:max-w-xl mx-auto mb-16">
+    <Carousel className="w-full max-w-full mx-auto">
       <CarouselContent>
         {[1, 2, 3, 4, 5].map((index) => (
           <CarouselItem key={index}>
