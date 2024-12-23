@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import HeaderCatalogo from './HeaderCatalogo';
+import React, { useState, useEffect, useMemo } from "react";
+import axios from "axios"; // Para realizar solicitudes HTTP
+import HeaderCatalogo from "./HeaderCatalogo";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,74 +11,78 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
+const ProductCard = ({ product }) => (
+  <Card>
+    <CardContent className="p-4">
+      <img
+        src={product.image } // Usa una imagen predeterminada si no hay imagen
+        alt={product.name}
+        width={200}
+        height={200}
+        className="w-full h-48 object-cover mb-4 rounded-md"
+      />
+      <h2 className="text-lg font-semibold mb-2">{product.name}</h2>
+      <p className="text-gray-600 mb-2">${product.price.toFixed(2)}</p>
+      <p className="text-sm text-gray-500 mb-4">Marca: {product.marca}</p>
+      <Button className="w-full">Añadir al carrito</Button>
+    </CardContent>
+  </Card>
+);
+
 function Catalogo() {
-  const [zapatillas, setZapatillas] = useState([
-    { id: 1, name: "Deportiva Hombre", price: 89.99, priceRange: '50-100', image: "/placeholder.svg?height=200&width=200&text=Deportiva+Hombre", gender: 'masculino', brand: 'Nike' },
-    { id: 2, name: "Casual Mujer", price: 69.99, priceRange: '50-100', image: "/placeholder.svg?height=200&width=200&text=Casual+Mujer", gender: 'femenino', brand: 'Adidas' },
-    { id: 3, name: "Running Hombre", price: 99.99, priceRange: '50-100', image: "/placeholder.svg?height=200&width=200&text=Running+Hombre", gender: 'masculino', brand: 'Puma' },
-    { id: 4, name: "Moda Mujer", price: 79.99, priceRange: '50-100', image: "/placeholder.svg?height=200&width=200&text=Moda+Mujer", gender: 'femenino', brand: 'Reebok' },
-    { id: 5, name: "Trekking Unisex", price: 109.99, priceRange: '100-150', image: "/placeholder.svg?height=200&width=200&text=Trekking+Unisex", gender: 'masculino', brand: 'New Balance' },
-  ]);
-  const [filteredZapatillas, setFilteredZapatillas] = useState(zapatillas);
+  const [products, setProducts] = useState([]);
   const [gender, setGender] = useState(null);
   const [sortBy, setSortBy] = useState(null);
   const [brand, setBrand] = useState(null);
 
-  const filterAndSortZapatillas = () => {
-    let result = [...zapatillas];
-    
+  // Obtén los productos desde la API
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("http://localhost:4000/Products"); // URL del backend
+        console.log("Productos obtenidos:", response.data); // Verifica la respuesta aquí
+        setProducts(response.data);
+      } catch (error) {
+        console.error("Error al obtener productos:", error);
+      }
+    };
+    fetchProducts();
+  }, []);
+
+  const filteredProducts = useMemo(() => {
+    let result = [...products];
+
     if (gender) {
-      result = result.filter(z => z.gender === gender);
+      result = result.filter((p) => p.gender === gender);
     }
-    
     if (brand) {
-      result = result.filter(z => z.brand === brand);
+      result = result.filter((p) => p.marca === brand);
     }
-    
-    if (sortBy) {
-      result = result.filter(z => {
-        if (sortBy === '150+') {
-          return z.price >= 150;
-        }
-        const [min, max] = sortBy.split('-').map(Number);
-        return z.price >= min && z.price < max;
-      });
-    }
-    
-    setFilteredZapatillas(result);
-  };
+    return result;
+  }, [gender, brand, products]);
 
   return (
     <div className="container mx-auto px-4">
-          <HeaderCatalogo />
+      <HeaderCatalogo />
       <div className="flex flex-col md:flex-row justify-between items-center mb-8">
-        <h1 className="text-3xl font-bold mb-4 md:mb-0">Catálogo de Zapatillas</h1>
+        <h1 className="text-3xl font-bold mb-4 md:mb-0">Catálogo de Productos</h1>
         <div className="flex flex-wrap gap-4">
-          <Select onValueChange={(value) => setGender(value)}>
+          <Select onValueChange={setGender} aria-label="Filtrar por género">
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Género" />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="gender">Genero</SelectItem>
               <SelectItem value="masculino">Masculino</SelectItem>
               <SelectItem value="femenino">Femenino</SelectItem>
             </SelectContent>
           </Select>
-          <Select onValueChange={(value) => setSortBy(value)}>
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Rango de precio" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="0-50">$0 - $50</SelectItem>
-              <SelectItem value="50-100">$50 - $100</SelectItem>
-              <SelectItem value="100-150">$100 - $150</SelectItem>
-              <SelectItem value="150+">$150+</SelectItem>
-            </SelectContent>
-          </Select>
-          <Select onValueChange={(value) => setBrand(value)}>
+          <Select onValueChange={setBrand} aria-label="Filtrar por marca">
             <SelectTrigger className="w-[180px]">
               <SelectValue placeholder="Marca" />
             </SelectTrigger>
             <SelectContent>
+              <SelectItem value="brand">Marca</SelectItem>
               <SelectItem value="Nike">Nike</SelectItem>
               <SelectItem value="Adidas">Adidas</SelectItem>
               <SelectItem value="Puma">Puma</SelectItem>
@@ -86,31 +90,17 @@ function Catalogo() {
               <SelectItem value="New Balance">New Balance</SelectItem>
             </SelectContent>
           </Select>
-          <Button onClick={filterAndSortZapatillas}>Aplicar Filtros</Button>
         </div>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredZapatillas.map((zapatilla) => (
-          <Card key={zapatilla.id}>
-            <CardContent className="p-4">
-              <img
-                src={zapatilla.image}
-                alt={zapatilla.name}
-                width={200}
-                height={200}
-                className="w-full h-48 object-cover mb-4 rounded-md"
-              />
-              <h2 className="text-lg font-semibold mb-2">{zapatilla.name}</h2>
-              <p className="text-gray-600 mb-2">${zapatilla.price.toFixed(2)} (Rango: {zapatilla.priceRange})</p>
-              <p className="text-sm text-gray-500 mb-4">Marca: {zapatilla.brand}</p>
-              <Button className="w-full">Añadir al carrito</Button>
-            </CardContent>
-          </Card>
-        ))}
+        {filteredProducts.length > 0 ? (
+          filteredProducts.map((product) => <ProductCard key={product._id} product={product} />)
+        ) : (
+          <p className="col-span-full text-center text-gray-600">No se encontraron resultados.</p>
+        )}
       </div>
     </div>
   );
 }
 
 export default Catalogo;
-
