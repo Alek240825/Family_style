@@ -1,29 +1,11 @@
-import mongoose from "mongoose";
+const productModel = {
+    name: "",
+    description: "",
+    marca: "",
+    price: 0,
+    image: [], // URLs de imágenes
+    status: "active", // Puede ser 'active' o 'inactive'
+};
 
-const productSchema = mongoose.Schema ({
-    name: {
-        type : String,
-        required: true,
-        trim: true,
-        unique: true
-    },
-    description: {
-        type : String,
-        required: true,
-        trim: true,
-    },
-    marca: {
-        type: String,
-        required: true,
-        trim: true
-    },
-    price: {
-        type: Number,
-        required: true,
-    },
-    image: {
-        type : [String],
-    },
-})
 
-export default mongoose.model("Product", productSchema);
+export default productModel;

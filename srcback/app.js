@@ -1,16 +1,23 @@
 import express from 'express';
-import morgan from 'morgan';
-import cors from "cors"
-import fileUpload from 'express-fileupload';
+import cors from 'cors';
 import productRoutes from './routes/product.routes.js';
+import marcasRouter from './routes/marcas.route.js';
 
-const app = express()
-app.use(express.json())
+const app = express();
+
+// Middleware para manejar datos en formato JSON
+app.use(express.json());
+
+// Configuración de CORS
 app.use(cors({
     origin: "http://localhost:5173",
     credentials: true
-}))
-app.use("/", productRoutes)
+}));
 
+// Rutas para productos
+app.use("/products", productRoutes);
 
-export default app
+// Rutas para marcas
+app.use("/marcas", marcasRouter);
+
+export default app;

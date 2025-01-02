@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import  logo from "../assets/Logo.png";
 
 function HeaderCatalogo() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,7 +11,7 @@ function HeaderCatalogo() {
         <div className="flex justify-between items-center h-16">
           <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="text-black text-xl font-bold">
-              Family style
+              <img src={logo} alt="logo" className='h-10'/>
             </Link>
           </div>
           <nav className="hidden md:flex space-x-4">
@@ -46,11 +47,11 @@ function HeaderCatalogo() {
       {isMenuOpen && (
         <div className="md:hidden" id="mobile-menu">
           <div className="px-2 pt-2 pb-3 space-y-1">
-            <Link to="/sobre-nosotros" className="text-black hover:text-gray-700 block px-3 py-2 rounded-md text-base font-medium">
-              Sobre nosotros
+            <Link to="/" className="text-black hover:text-gray-700 block px-3 py-2 rounded-md text-base font-medium">
+              Inicio
             </Link>
-            <Link to="/catalogo" className="text-black hover:text-gray-700 block px-3 py-2 rounded-md text-base font-medium">
-              Catálogo
+            <Link to="/sobre-nosotros" className="text-black hover:text-gray-700 block px-3 py-2 rounded-md text-base font-medium">
+              Sobre Nosotors
             </Link>
           </div>
         </div>
